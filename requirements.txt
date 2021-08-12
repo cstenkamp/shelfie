@@ -1,0 +1,6 @@
+bottlenose
+flask
+opencv-python
+Levenshtein
+psycopg2
+scikit-image

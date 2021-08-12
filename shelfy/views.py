@@ -9,8 +9,8 @@ from werkzeug.utils import secure_filename
 
 
 
-import main
-sys.path.append(main.SHELFY_BASE_PATH + '/models')
+SHELFY_BASE_PATH = os.path.dirname(__file__)
+sys.path.append(SHELFY_BASE_PATH + '/models')
 import book_functions, scraper, server, utility
 
 
@@ -21,7 +21,7 @@ views = flask.Blueprint('views', __name__)
 
 
 def format_file_path_for_routing(file_path):
-    file_path = file_path.replace(main.SHELFY_BASE_PATH, '')
+    file_path = file_path.replace(SHELFY_BASE_PATH, '')
     return file_path
 
 @views.route('/submission/<submission_id>/admin', methods=['GET'])

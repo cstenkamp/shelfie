@@ -4,6 +4,7 @@ import io
 import requests
 import sys
 import time
+from os.path import join
 
 # Scraping
 from bs4 import BeautifulSoup
@@ -16,24 +17,11 @@ import hmac
 import hashlib
 import base64
 
-# Program specific
-sys.path.append('..')
-import main
-
-
-
-
-
-
-
-
 
 
 
 google_books_api_key = 'AIzaSyBueagspvDe8R-prJ3bmqtEnr7fPTH10Xo'
 goodreads_api_key = 'ooiawV83knPQnQ8If3eiSg'
-
-
 
 
 
@@ -595,7 +583,7 @@ def get_amazon_api_info():
     Opens a file to get amazon api info
     '''
 
-    with open(main.SHELFY_BASE_PATH + '/keys/amazon_product', 'r') as file_handle:
+    with open(join(os.path.dirname(__file__), "..") + '/keys/amazon_product', 'r') as file_handle:
         reader = csv.reader(file_handle, delimiter = ',')
 
         aws_access_key_id = next(reader)[1]

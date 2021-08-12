@@ -6,14 +6,13 @@ import json
 import os
 import pickle
 import sys
+from os.path import join
 
 # Scipy
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Shelfy
-sys.path.append('..')
-import main
 import book_functions
 
 # Google cloud visionfrom google.cloud import vision
@@ -29,7 +28,7 @@ def generate_unique_id_incremental():
     '''
 
     # Get all folder names
-    submissions_path = main.SHELFY_BASE_PATH + '/static/submissions'
+    submissions_path = join(os.path.dirname(__file__), "..") + '/static/submissions'
     submission_ids = os.listdir(submissions_path)
 
     # If no submissions, initialize with first submission value
@@ -59,7 +58,7 @@ def create_new_submission(file):
 
 
     # Create the main and sub folders for the submission
-    directory = main.SHELFY_BASE_PATH + '/static/submissions/' + id
+    directory = join(os.path.dirname(__file__), "..") +  '/static/submissions/' + id
 
     os.makedirs(directory)
 
@@ -92,7 +91,7 @@ def get_raw_image_path_from_submission_id(submission_id):
     '''
 
     # Get the directory of the raw_file file for the submission_id
-    file_directory = main.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/raw_img'
+    file_directory = join(os.path.dirname(__file__), "..") + '/static/submissions/' + submission_id + '/raw_img'
 
 
     # get file path
@@ -113,7 +112,7 @@ def get_processed_image_path_from_submission_id(submission_id):
     '''
 
     # Get the directory of the raw_file file for the submission_id
-    file_path = main.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/proc_img/proc_img.png'
+    file_path = join(os.path.dirname(__file__), "..") +  '/static/submissions/' + submission_id + '/proc_img/proc_img.png'
 
 
     return file_path
@@ -130,7 +129,7 @@ def get_pickle_directory_from_submission_id(submission_id):
 
 
     # Get the directory of the raw_file file for the submission_id
-    pickle_directory = main.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/books'
+    pickle_directory = join(os.path.dirname(__file__), "..") +  '/static/submissions/' + submission_id + '/books'
 
 
     return pickle_directory
@@ -142,7 +141,7 @@ def get_info_directory_from_submission_id(submission_id):
     Returns the correct path to the info directory for submission_id
     '''
 
-    info_directory = main.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/info'
+    info_directory = join(os.path.dirname(__file__), "..") +  '/static/submissions/' + submission_id + '/info'
 
     return info_directory
 

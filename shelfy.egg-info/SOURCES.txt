@@ -1,5 +1,7 @@
+README.md
+setup.py
 shelfy/__init__.py
-shelfy/app.py
+shelfy/main.py
 shelfy/views.py
 shelfy.egg-info/PKG-INFO
 shelfy.egg-info/SOURCES.txt
