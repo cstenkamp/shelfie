@@ -4,13 +4,14 @@ import io
 import requests
 import sys
 import time
-from os.path import join
+from os.path import join, dirname
+import os
 
 # Scraping
 from bs4 import BeautifulSoup
 import json
 import bottlenose
-
+from googlesearch import search
 
 # Hash
 import hmac
@@ -31,14 +32,10 @@ def get_page_soup(url):
     Submits a request and returns the soup of the object;
     if 404, returns False
     '''
-
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36\
      (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
-
     response = requests.get(url, headers=ua)
     soup = BeautifulSoup(response.content, 'lxml')
-
-
     return soup
 
 
@@ -46,8 +43,9 @@ def get_google_search_url_from_query(search_query):
     '''
     Formats a string to be in the proper url for a google search
     '''
-    url = 'https://www.google.com/search?q=amazon+book+'+search_query.replace(' ', '+')
-    return url
+    # url = 'https://www.google.com/search?q=amazon+book+'+search_query.replace(' ', '+')
+    # return url
+    return "amazon book "+search_query
 
 def is_isbn10(isbn10, debug = False):
     '''
@@ -55,8 +53,6 @@ def is_isbn10(isbn10, debug = False):
     '''
 
     is_isbn = False
-
-
 
     # isbn10 must be a string
     if type(isbn10) == str:
@@ -83,16 +79,10 @@ def query_goodreads_api(isbn10, debug = False):
     Gets book information from goodreads API call
     '''
 
-
-
     # Main info
 
     book_info = {}
     book_info['isbn10'] = isbn10
-
-
-
-
 
     # Header
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
@@ -361,20 +351,19 @@ def get_amazon_url_from_google_search(search_url):
     '''
 
     # Perform the search and get the HTML
-    ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
-    response = requests.get(search_url, headers=ua)
-    content = response.content
-
+    # ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
+    # response = requests.get(search_url, headers=ua)
+    # content = response.content
+    #
     # Parse HTML content for amazon link; return first amazon url
-    soup = BeautifulSoup(content, 'html.parser')
+    # soup = BeautifulSoup(content, 'html.parser')
     amazon_urls = []
 
+    # for link in soup.find_all('a'):
+    for link in search(search_url, num_results=100):
 
-    for link in soup.find_all('a'):
-
-
-        url = str(link.get('href'))
-
+        # url = str(link.get('href'))
+        url = link
 
         # Found an amazon url
         if ('www.amazon.com' in url) and ('/dp/' in url):
@@ -583,7 +572,7 @@ def get_amazon_api_info():
     Opens a file to get amazon api info
     '''
 
-    with open(join(os.path.dirname(__file__), "..") + '/keys/amazon_product', 'r') as file_handle:
+    with open(join(dirname(__file__), "..") + '/keys/amazon_product', 'r') as file_handle:
         reader = csv.reader(file_handle, delimiter = ',')
 
         aws_access_key_id = next(reader)[1]

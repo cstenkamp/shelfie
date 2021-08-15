@@ -1,0 +1,3 @@
+[submodule "shelfy/momox-price-check"]
+	path = shelfy/momox-price-check
+	url = git@github.com:Funeoz/momox-price-check.git
